@@ -22,3 +22,17 @@
     border-radius: 4px;
   }
   
+
+ .html-COde{
+  padding: 20px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  border-radius: 4px;  
+  height: 200px;
+  overflow-y: auto;
+
+ }
+
+ .codedialog{
+  overflow: hidden;
+ }

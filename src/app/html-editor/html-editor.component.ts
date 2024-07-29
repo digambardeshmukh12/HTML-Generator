@@ -1,4 +1,5 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, TemplateRef, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-html-editor',
@@ -7,6 +8,9 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 })
 export class HtmlEditorComponent {
   @ViewChild('editorRef') editorRef!: ElementRef;
+  @ViewChild('tableDialog') tableDialog!: TemplateRef<any>;
+  @ViewChild('codeDialog') codeDialog!: TemplateRef<any>;
+
   editorContent: string = '';
   htmlContent: string = '';
   showTableDialog: boolean = false;
@@ -16,6 +20,28 @@ export class HtmlEditorComponent {
   // Apply formatting commands
   format(command: string, value?: string) {
     document.execCommand(command, false, value);
+  }
+  constructor(private dialog: MatDialog) {}
+
+
+  openTableDialog() {
+    this.dialog.open(this.tableDialog, {
+      width: '400px'
+    });
+  }
+
+  openCodeDialog() {
+    const editor = document.querySelector('.editor') as HTMLElement;
+    if (editor) {
+      this.htmlContent = editor.innerHTML;
+    }
+    this.dialog.open(this.codeDialog, {
+      width: '400px'
+    });
+  }
+
+  closeTableDialog() {
+    this.dialog.closeAll();
   }
 
   // Create a link
@@ -54,10 +80,7 @@ export class HtmlEditorComponent {
     this.format('hiliteColor', color);
   }
 
-  // Toggle the visibility of the table dialog
-  toggleTableDialog() {
-    this.showTableDialog = !this.showTableDialog;
-  }
+ 
 
   // Insert a table into the editor
   insertTable(event: Event) {
@@ -74,10 +97,11 @@ export class HtmlEditorComponent {
       }
       tableHtml += '</table>';
       this.insertHtmlAtCaret(tableHtml ,  this.editorRef.nativeElement);
-      this.toggleTableDialog(); // Close dialog after insertion
-    } else {
+     } else {
       alert('Invalid input. Please enter positive integers for rows and columns.');
     }
+    this.dialog.closeAll();
+
   }
 
   insertHtmlAtCaret(html: string, editor: HTMLElement) {
@@ -116,11 +140,7 @@ export class HtmlEditorComponent {
     }
   }
 
-  // Get the current HTML content of the editor
-  getHtmlContent() {
-    alert(this.editorContent);
-    this.htmlContent = this.editorContent;
-  }
+ 
 
   // Remove the currently selected row from the table
   removeRow() {
@@ -177,5 +197,18 @@ export class HtmlEditorComponent {
   // Redo the last undone action
   redo() {
     document.execCommand('redo');
+  }
+
+
+
+  copyCode() {
+    debugger
+    const textarea = document.createElement('textarea');
+    textarea.value = this.htmlContent;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+    alert('Code copied to clipboard!');
   }
 }

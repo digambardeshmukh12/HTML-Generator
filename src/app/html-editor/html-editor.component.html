@@ -1,99 +1,104 @@
 <mat-toolbar color="primary">
-    <span>HTML Editor</span>
-  </mat-toolbar>
-  
-  <div class="toolbar">
-    <!-- Formatting options -->
-    <button mat-icon-button (click)="format('bold')" title="Bold">
-      <mat-icon>format_bold</mat-icon>
-    </button>
-    <button mat-icon-button (click)="format('italic')" title="Italic">
-      <mat-icon>format_italic</mat-icon>
-    </button>
-    <button mat-icon-button (click)="format('underline')" title="Underline">
-      <mat-icon>format_underline</mat-icon>
-    </button>
-    <button mat-icon-button (click)="format('strikeThrough')" title="Strikethrough">
-      <mat-icon>format_strikethrough</mat-icon>
-    </button>
-    
-    <button mat-icon-button (click)="format('formatBlock', 'H1')" title="Heading 1">
-      <mat-icon>format_size</mat-icon>
-    </button>
-    <button mat-icon-button (click)="format('formatBlock', 'H2')" title="Heading 2">
-      <mat-icon>format_size</mat-icon>
-    </button>
-    <button mat-icon-button (click)="format('formatBlock', 'H3')" title="Heading 3">
-      <mat-icon>format_size</mat-icon>
-    </button>
-    
-    <button mat-icon-button (click)="format('insertUnorderedList')" title="Bullets">
-      <mat-icon>format_list_bulleted</mat-icon>
-    </button>
-    <button mat-icon-button (click)="format('insertOrderedList')" title="Numbers">
-      <mat-icon>format_list_numbered</mat-icon>
-    </button>
-    
-    <button mat-icon-button (click)="format('justifyLeft')" title="Align Left">
-      <mat-icon>format_align_left</mat-icon>
-    </button>
-    <button mat-icon-button (click)="format('justifyCenter')" title="Align Center">
-      <mat-icon>format_align_center</mat-icon>
-    </button>
-    <button mat-icon-button (click)="format('justifyRight')" title="Align Right">
-      <mat-icon>format_align_right</mat-icon>
-    </button>
-    
-    <button mat-icon-button (click)="createLink()" title="Insert Link">
-      <mat-icon>insert_link</mat-icon>
-    </button>
-    
-    <button mat-icon-button (click)="toggleTableDialog()" title="Insert Table">
-      <mat-icon>table_chart</mat-icon>
-    </button>
-    <button mat-icon-button (click)="removeRow()" title="Remove Row">
-      <mat-icon>remove</mat-icon>
-    </button>
-    <button mat-icon-button (click)="removeColumn()" title="Remove Column">
-      <mat-icon>remove</mat-icon>
-    </button>
-    
-    <button mat-icon-button (click)="undo()" title="Undo">
-      <mat-icon>undo</mat-icon>
-    </button>
-    <button mat-icon-button (click)="redo()" title="Redo">
-      <mat-icon>redo</mat-icon>
-    </button>
-    
-    <mat-form-field>
-      <mat-select (change)="changeFontSize($event)" placeholder="Font Size">
-        <mat-option value="1">Small</mat-option>
-        <mat-option value="3" selected>Normal</mat-option>
-        <mat-option value="5">Large</mat-option>
-        <mat-option value="7">Huge</mat-option>
-      </mat-select>
-    </mat-form-field>
-    
-    <mat-form-field>
-      <mat-select (change)="changeFontFamily($event)" placeholder="Font Family">
-        <mat-option value="Arial" selected>Arial</mat-option>
-        <mat-option value="Times New Roman">Times New Roman</mat-option>
-        <mat-option value="Courier New">Courier New</mat-option>
-      </mat-select>
-    </mat-form-field>
-  
-    <mat-form-field>
-      <input matInput type="color" (change)="changeTextColor($event)" title="Text Color" />
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput type="color" (change)="changeBackgroundColor($event)" title="Background Color" />
-    </mat-form-field>
-  </div>
-  
-  <div #editorRef contenteditable="true" class="editor" (input)="updateContent()"></div>
-  
-  <!-- Table Dialog -->
-  <mat-dialog-content *ngIf="showTableDialog">
+  <span>HTML Editor</span>
+</mat-toolbar>
+
+<div class="toolbar">
+  <!-- Formatting options -->
+  <button mat-icon-button (click)="format('bold')" title="Bold">
+    <mat-icon>format_bold</mat-icon>
+  </button>
+  <button mat-icon-button (click)="format('italic')" title="Italic">
+    <mat-icon>format_italic</mat-icon>
+  </button>
+  <button mat-icon-button (click)="format('underline')" title="Underline">
+    <mat-icon>format_underline</mat-icon>
+  </button>
+  <button mat-icon-button (click)="format('strikeThrough')" title="Strikethrough">
+    <mat-icon>format_strikethrough</mat-icon>
+  </button>
+
+  <button mat-icon-button (click)="format('formatBlock', 'H1')" title="Heading 1">
+    <mat-icon>format_size</mat-icon>
+  </button>
+  <button mat-icon-button (click)="format('formatBlock', 'H2')" title="Heading 2">
+    <mat-icon>format_size</mat-icon>
+  </button>
+  <button mat-icon-button (click)="format('formatBlock', 'H3')" title="Heading 3">
+    <mat-icon>format_size</mat-icon>
+  </button>
+
+  <button mat-icon-button (click)="format('insertUnorderedList')" title="Bullets">
+    <mat-icon>format_list_bulleted</mat-icon>
+  </button>
+  <button mat-icon-button (click)="format('insertOrderedList')" title="Numbers">
+    <mat-icon>format_list_numbered</mat-icon>
+  </button>
+
+  <button mat-icon-button (click)="format('justifyLeft')" title="Align Left">
+    <mat-icon>format_align_left</mat-icon>
+  </button>
+  <button mat-icon-button (click)="format('justifyCenter')" title="Align Center">
+    <mat-icon>format_align_center</mat-icon>
+  </button>
+  <button mat-icon-button (click)="format('justifyRight')" title="Align Right">
+    <mat-icon>format_align_right</mat-icon>
+  </button>
+
+  <button mat-icon-button (click)="createLink()" title="Insert Link">
+    <mat-icon>insert_link</mat-icon>
+  </button>
+
+  <button mat-icon-button (click)="openTableDialog()" title="Insert Table">
+    <mat-icon>table_chart</mat-icon>
+  </button>
+  <button mat-icon-button (click)="removeRow()" title="Remove Row">
+    <mat-icon>remove</mat-icon>
+  </button>
+  <button mat-icon-button (click)="removeColumn()" title="Remove Column">
+    <mat-icon>remove</mat-icon>
+  </button>
+
+  <button mat-icon-button (click)="undo()" title="Undo">
+    <mat-icon>undo</mat-icon>
+  </button>
+  <button mat-icon-button (click)="redo()" title="Redo">
+    <mat-icon>redo</mat-icon>
+  </button>
+
+  <button mat-icon-button (click)="openCodeDialog()" title="Code">
+    <mat-icon>code</mat-icon>
+  </button>
+
+  <mat-form-field>
+    <mat-select (change)="changeFontSize($event)" placeholder="Font Size">
+      <mat-option value="1">Small</mat-option>
+      <mat-option value="3" selected>Normal</mat-option>
+      <mat-option value="5">Large</mat-option>
+      <mat-option value="7">Huge</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-select (change)="changeFontFamily($event)" placeholder="Font Family">
+      <mat-option value="Arial" selected>Arial</mat-option>
+      <mat-option value="Times New Roman">Times New Roman</mat-option>
+      <mat-option value="Courier New">Courier New</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput type="color" (change)="changeTextColor($event)" title="Text Color" />
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput type="color" (change)="changeBackgroundColor($event)" title="Background Color" />
+  </mat-form-field>
+</div>
+
+<div #editorRef contenteditable="true" class="editor" (input)="updateContent()"></div>
+
+<!-- Table Dialog -->
+<ng-template #tableDialog>
+  <mat-dialog-content>
     <h3>Create Table</h3>
     <form (submit)="insertTable($event)">
       <mat-form-field>
@@ -105,13 +110,22 @@
         <input matInput id="cols" type="number" [(ngModel)]="tableCols" name="cols" required />
       </mat-form-field>
       <button mat-raised-button type="submit">Insert Table</button>
-      <button mat-button type="button" (click)="toggleTableDialog()">Cancel</button>
+      <button mat-button type="button" (click)="closeTableDialog()">Cancel</button>
     </form>
   </mat-dialog-content>
-  
-  <button mat-raised-button (click)="getHtmlContent()">Get HTML Content</button>
-  <div>
-    <h3>Generated HTML:</h3>
-    <pre>{{ htmlContent }}</pre>
-  </div>
-  
+</ng-template>
+
+ 
+
+<ng-template #codeDialog>
+  <mat-dialog-content class="codedialog">
+    <div class="html-COde">
+      <h3>Generated HTML:</h3>
+      <span>{{ htmlContent }}</span>
+    </div>
+    <button mat-raised-button (click)="copyCode()">Copy Code</button>
+
+  </mat-dialog-content>
+
+
+</ng-template>
