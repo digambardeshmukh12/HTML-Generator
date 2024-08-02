@@ -1,9 +1,4 @@
-.editor {
-    border: 1px solid #ccc;
-    min-height: 200px;
-    padding: 10px;
-    overflow-y: auto;
-  }
+ 
   
   .toolbar {
     display: flex;
@@ -36,3 +31,71 @@
  .codedialog{
   overflow: hidden;
  }
+
+
+
+ 
+
+ 
+
+.design-cont{
+  border: 1px solid #ccc;
+  max-width: 630px;
+  padding: 16px;
+  overflow-x: auto;
+  margin: 10px 10px 20px 10px;
+}
+
+ 
+.table-dialog {
+  padding: 20px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  border-radius: 4px;
+}
+
+
+.html-COde{
+padding: 20px;
+border: 1px solid #ccc;
+background-color: #fff;
+border-radius: 4px;  
+height: 200px;
+overflow-y: auto;
+
+}
+
+.codedialog{
+overflow: hidden;
+}
+
+
+
+.rounded-color-input {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  padding: 5px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  margin-left: 4px;
+}
+
+.rotate-180 {
+  transform: rotate(90deg);
+}
+
+
+.editor ol {
+  list-style-type: decimal; /* Ensures ordered lists show numbers */
+}
+
+.editor ul {
+  list-style-type: disc; /* Ensures unordered lists show bullets */
+}
+.fontnumber{
+  font-size: 1rem; /* 24px */
+  margin-top: 1rem; /* 8px */
+
+
+}

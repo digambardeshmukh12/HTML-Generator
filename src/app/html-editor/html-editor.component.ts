@@ -1,5 +1,5 @@
 import { Component, ElementRef, TemplateRef, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-html-editor',
@@ -7,6 +7,19 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./html-editor.component.css']
 })
 export class HtmlEditorComponent {
+  tableDialogRef: MatDialogRef<any> | null = null;
+  codeDialogRef: MatDialogRef<any> | null = null;
+
+  constructor(
+
+    private dialog: MatDialog
+  ) { }
+
+
+  ngOnInit() {
+    debugger
+  }
+
   @ViewChild('editorRef') editorRef!: ElementRef;
   @ViewChild('tableDialog') tableDialog!: TemplateRef<any>;
   @ViewChild('codeDialog') codeDialog!: TemplateRef<any>;
@@ -19,13 +32,70 @@ export class HtmlEditorComponent {
 
   // Apply formatting commands
   format(command: string, value?: string) {
-    document.execCommand(command, false, value);
-  }
-  constructor(private dialog: MatDialog) {}
+    this.editorRef.nativeElement.focus();
 
+    const selection = window.getSelection();
+    if (selection && selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0);
+
+      // Apply font size to newly entered text
+      if (command === 'fontSize') {
+        const span = document.createElement('span');
+        span.style.fontSize = this.fontside;
+        range.surroundContents(span);
+      } else {
+        document.execCommand(command, false, value);
+      }
+    }
+  }
+
+  AddOrder(command: 'insertOrderedList' | 'insertUnorderedList') {
+    const editor = this.editorRef.nativeElement;
+
+    // Insert the new list
+    editor.innerHTML += command === 'insertOrderedList'
+      ? '<ol><li>List item</li></ol>'
+      : '<ul><li>List item</li></ul>';
+
+    // Apply default list styles if needed
+    const listElements = editor.querySelectorAll('ol, ul');
+    listElements.forEach((list: { style: { listStyleType: string; }; }) => {
+      list.style.listStyleType = command === 'insertOrderedList' ? 'decimal' : 'disc';
+    });
+
+    // Set focus to the editor
+    editor.focus();
+  }
+
+  fontside = '16'
+  formatText(size: string) {
+    const selection = window.getSelection();
+    if(selection != null){
+      const range = selection.getRangeAt(0);
+      const selectedText = range.extractContents();
+      const span = document.createElement('span');
+      this.editorRef.nativeElement.focus();
+  
+      span.style.fontSize = size;
+      if (size === 'larger') {
+        this.fontside = (parseInt(this.fontside, 10) + 2).toString();
+      } else {
+        this.fontside = (parseInt(this.fontside, 10) - 2).toString();
+      }
+  
+      span.appendChild(selectedText);
+  
+      range.insertNode(span);
+  
+      // Trigger change detection to update the view
+      this.updateContent();
+    }
+
+ 
+  }
 
   openTableDialog() {
-    this.dialog.open(this.tableDialog, {
+    this.tableDialogRef = this.dialog.open(this.tableDialog, {
       width: '400px'
     });
   }
@@ -35,13 +105,23 @@ export class HtmlEditorComponent {
     if (editor) {
       this.htmlContent = editor.innerHTML;
     }
-    this.dialog.open(this.codeDialog, {
+    this.codeDialogRef = this.dialog.open(this.codeDialog, {
       width: '400px'
     });
   }
 
   closeTableDialog() {
-    this.dialog.closeAll();
+    if (this.tableDialogRef) {
+      this.tableDialogRef.close();
+      this.tableDialogRef = null;
+    }
+  }
+
+  closeCodeDialog() {
+    if (this.codeDialogRef) {
+      this.codeDialogRef.close();
+      this.codeDialogRef = null;
+    }
   }
 
   // Create a link
@@ -66,41 +146,46 @@ export class HtmlEditorComponent {
     this.format('fontName', family);
   }
 
-  // Change the text color
   changeTextColor(event: Event) {
     const input = event.target as HTMLInputElement;
     const color = input.value;
-    this.format('foreColor', color);
+    this.applyFormat('foreColor', color);
   }
 
-  // Change the background color
   changeBackgroundColor(event: Event) {
     const input = event.target as HTMLInputElement;
     const color = input.value;
-    this.format('hiliteColor', color);
+    this.applyFormat('hiliteColor', color);
   }
 
- 
+  applyFormat(command: string, value?: string) {
+    this.editorRef.nativeElement.focus();
+
+    const selection = window.getSelection();
+    if (selection && selection.rangeCount > 0) {
+      document.execCommand(command, false, value);
+    }
+  }
 
   // Insert a table into the editor
   insertTable(event: Event) {
     event.preventDefault(); // Prevent form submission
-
+debugger
     if (this.tableRows > 0 && this.tableCols > 0) {
-      let tableHtml = '<table border="1" style="  border-collapse: collapse;">';
+      let tableHtml = '<table border="1" style="border: 1px solid #ddd;">';
       for (let i = 0; i < this.tableRows; i++) {
-        tableHtml += '<tr>';
+        tableHtml += '<tr style=" border: 1px solid #ddd;">';
         for (let j = 0; j < this.tableCols; j++) {
-          tableHtml += '<td style=" padding: 0 20px;">&nbsp;</td>';
+          tableHtml += '<td style=" padding: 0 20px; border: 1px solid #ddd;">&nbsp;</td>';
         }
         tableHtml += '</tr>';
       }
       tableHtml += '</table>';
-      this.insertHtmlAtCaret(tableHtml ,  this.editorRef.nativeElement);
-     } else {
+      this.insertHtmlAtCaret(tableHtml, this.editorRef.nativeElement);
+    } else {
       alert('Invalid input. Please enter positive integers for rows and columns.');
     }
-    this.dialog.closeAll();
+    this.closeTableDialog();
 
   }
 
@@ -140,19 +225,14 @@ export class HtmlEditorComponent {
     }
   }
 
- 
-
   // Remove the currently selected row from the table
   removeRow() {
     const selection = window.getSelection();
     if (selection && selection.rangeCount > 0) {
       const range = selection.getRangeAt(0);
-      const table = this.findAncestor(range.startContainer, 'table');
-      if (table) {
-        const row = this.findAncestor(range.startContainer, 'tr');
-        if (row) {
-          row.remove();
-        }
+      const currentRow = (range.startContainer as Element).closest('tr');
+      if (currentRow) {
+        currentRow.remove();
       }
     }
   }
@@ -188,7 +268,6 @@ export class HtmlEditorComponent {
     }
     return null;
   }
-
   // Undo the last action
   undo() {
     document.execCommand('undo');
@@ -199,10 +278,7 @@ export class HtmlEditorComponent {
     document.execCommand('redo');
   }
 
-
-
   copyCode() {
-    debugger
     const textarea = document.createElement('textarea');
     textarea.value = this.htmlContent;
     document.body.appendChild(textarea);
