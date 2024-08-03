@@ -230,9 +230,12 @@ debugger
     const selection = window.getSelection();
     if (selection && selection.rangeCount > 0) {
       const range = selection.getRangeAt(0);
-      const currentRow = (range.startContainer as Element).closest('tr');
-      if (currentRow) {
-        currentRow.remove();
+      const table = this.findAncestor(range.startContainer, 'table');
+      if (table) {
+        const row = this.findAncestor(range.startContainer, 'tr');
+        if (row) {
+          row.remove();
+        }
       }
     }
   }
