@@ -1,27 +1,65 @@
-# TextToHTMLConverter
+# HTML Editor with Angular Material
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.0.3.
+A reusable **Angular HTML editor library** built with **Angular Material**, providing rich text editing capabilities with a clean and intuitive toolbar.
 
-## Development server
+---
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## 📌 Overview
 
-## Code scaffolding
+**HTML Editor with Angular Material** allows developers to easily integrate a rich text editor into Angular applications.  
+It supports text formatting, tables, lists, links, colors, and more, while generating clean and readable HTML output.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+The library is designed for **enterprise applications**, **configuration-driven systems**, and **admin panels** where dynamic HTML content creation is required.
 
-## Build
+---
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## ✨ Features
 
-## Running unit tests
+### Text Formatting
+- Bold
+- Italic
+- Underline
+- Strikethrough
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Headings
+- H1
+- H2
+- H3
 
-## Running end-to-end tests
+### Lists
+- Ordered list
+- Unordered list
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+### Alignment
+- Left
+- Center
+- Right
 
-## Further help
+### Links
+- Insert and manage hyperlinks
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+### Tables
+- Create and manage tables
+
+### Utilities
+- Undo / Redo
+- Text color picker
+- Background color picker
+- View and copy generated HTML code
+
+---
+
+## 🛠 Tech Stack
+
+- Angular
+- Angular Material
+- TypeScript
+
+---
+
+## 📦 Installation
+
+Install the package using npm:
+
+```bash
+npm install html-converter-dd
